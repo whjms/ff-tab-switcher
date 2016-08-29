@@ -1,9 +1,10 @@
 var container = document.querySelector("#tabs");
 var keys = "asdf";
-var inputWaitTime = 300;
+var inputWaitTime = 350;
 var keyCodeBackspace = 8;
 var classSelected = "selected";
 var classFiltered = "filtered";
+var classOpening = "opening";
 var timeoutID = undefined;
 
 function htmlEncode( html ) {
@@ -83,9 +84,12 @@ self.port.on("ready", function(msg) {
 function getInput() {
 	return container.getAttribute("data-input-keys");
 }
+function setInputPreview(val) {
+	document.querySelector("#inputDisplay").innerHTML = htmlEncode(val);
+}
 function setInput(val) {
 	container.setAttribute("data-input-keys", val);
-	document.querySelector("#inputDisplay").innerHTML = htmlEncode(val);
+	setInputPreview(val);
 	return val;
 }
 
@@ -101,6 +105,7 @@ self.port.on("hide", function() {
 	}
 
 	setInput("");
+	setInputPreview("...");
 });
 
 function updateList(input, tabs) {
@@ -118,11 +123,13 @@ function updateList(input, tabs) {
 			tab.classList.remove(classFiltered);
 		}
 
+		tab.classList.remove(classOpening);
+
 		// if we've typed in our selector, wait a little while to see if we're
 		// done typing and switch tabs
 		if(keys === input) {
 			let currentInput = input;
-
+			tab.classList.add(classOpening);
 			timeoutID = setTimeout(() => {
 				if(getInput() === currentInput) {
 					switchToTab(i);

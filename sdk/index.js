@@ -1,12 +1,13 @@
 var self = require("sdk/self");
 var data = self.data;
-
+let width = 600;
+let maxHeight = 900;
 var panel = require("sdk/panel").Panel({
 	contentURL: data.url("panel.html"),
 	contentScriptFile: data.url("panel.js"),
 	contentStyleFile: data.url("panel.css"),
-	width: 600,
-	height: 700
+	width: width,
+	height: maxHeight
 });
 
 // returns a list of objects
@@ -24,7 +25,11 @@ function togglePanel() {
 	if(panel.isShowing) {
 		panel.hide();
 	} else {
-		panel.port.emit("ready", JSON.stringify(getTabList()));
+		let tabs = getTabList();
+		let tabHeight = 31;
+
+		panel.resize(width, Math.min(maxHeight, 20 + 20 + tabHeight * tabs.length))
+		panel.port.emit("ready", JSON.stringify(tabs));
 		panel.show();
 	}
 }
