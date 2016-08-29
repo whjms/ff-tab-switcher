@@ -4,7 +4,9 @@ var data = self.data;
 var panel = require("sdk/panel").Panel({
 	contentURL: data.url("panel.html"),
 	contentScriptFile: data.url("panel.js"),
-	contentStyleFile: data.url("panel.css")
+	contentStyleFile: data.url("panel.css"),
+	width: 500,
+	height: 400
 });
 
 // returns a list of objects

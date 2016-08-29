@@ -1,6 +1,10 @@
 <html>
 	<body>
-		<ul id="tabs" data-input-keys="">
+		<!--NOTE: we include tabindex because FF only allows focus on inputs
+		    and elements that have tabindex specified. without it, the panel
+		    won't be automatically focused.
+		-->
+		<ul id="tabs" data-input-keys="" tabindex="1">
 		</ul>
 	</body>
 </html>

@@ -34,6 +34,10 @@ self.port.on("ready", function(msg) {
 	var tabLIs = tabs.map(generateLI);
 
 	tabLIs.forEach(li => container.appendChild(li));
+
+	// force the focus to enter our frame/panel so that the JS can capture it
+	container.focus();
+
 	self.port.emit("selectTab", 0);
 });
 
