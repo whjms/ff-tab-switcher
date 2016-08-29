@@ -14,4 +14,5 @@ self.port.on("ready", function(msg) {
 	});
 
 	tabLIs.forEach(li => container.appendChild(li));
+	self.port.emit("selectTab", 0);
 });

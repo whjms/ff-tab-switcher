@@ -25,8 +25,14 @@ function showPanel() {
 	panel.show();
 }
 
+// setup hotkey
 var { Hotkey } = require("sdk/hotkeys");
 var showPanel = Hotkey({
 	combo: "alt-c",
 	onPress: showPanel
+});
+
+// switch to selected tab
+panel.port.on("selectTab", tab => {
+	console.log(`selectTab(${tab})`);
 });
