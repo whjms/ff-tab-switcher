@@ -19,7 +19,7 @@ li {
 	margin: 6px 0;
 	transition: opacity 0.2s ease-in-out;
 }
-li.selected {
+.key.selected {
 	font-weight: bold;
 	background: #567;
 }

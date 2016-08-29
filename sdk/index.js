@@ -38,7 +38,6 @@ var showPanelKey = Hotkey({
 
 // switch to selected tab
 panel.port.on("selectTab", index => {
-	console.log(`selectTab(${index})`);
 	let tabs = require("sdk/tabs");
 	tabs[index].activate();
 	panel.hide();

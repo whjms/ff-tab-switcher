@@ -1,11 +1,19 @@
 var container = document.querySelector("#tabs");
 var keys = "asdf";
-var inputWaitTime = 350;
+var inputWaitTime = 300;
+var keyCodeBackspace = 8;
+var classSelected = "selected";
+var classFiltered = "filtered";
+var timeoutID = undefined;
 
 function htmlEncode( html ) {
     return document.createElement( 'a' ).appendChild( 
         document.createTextNode( html ) ).parentNode.innerHTML;
 };
+
+function concat(array, initial) {
+	return array.reduce((prev, curr) => prev + curr, initial);
+}
 
 function generateKeyBindings(tabs) {
 	// set initial shortcut to blank
@@ -46,9 +54,12 @@ function generateKeyBindings(tabs) {
 }
 
 function generateLI(tab) {
+	let keySpans = tab.keys.split('').map(key => `<span class="key">${htmlEncode(key)}</span>`);
+	let keySpansConcat = concat(keySpans, "");
+
 	var html = 
-		`<li>
-			<span class="keys">${htmlEncode(tab.keys)}</span>
+		`<li data-keys="${htmlEncode(tab.keys)}">
+			<span class="keys">${keySpansConcat}</span>
 			<span class="title">${htmlEncode(tab.title)}</span>
 		</li>`;
 
@@ -74,6 +85,7 @@ function getInput() {
 }
 function setInput(val) {
 	container.setAttribute("data-input-keys", val);
+	document.querySelector("#inputDisplay").innerHTML = htmlEncode(val);
 	return val;
 }
 
@@ -91,33 +103,56 @@ self.port.on("hide", function() {
 	setInput("");
 });
 
+function updateList(input, tabs) {
+	let lastChar = input[input.length - 1];
+
+	// see if we've found the tab we were searching for, and update classes
+	for(let i = 0; i < tabs.length; i++) {
+		let tab = tabs[i];
+		let keys = tab.getAttribute("data-keys");
+
+		let shouldFilter = lastChar !== keys[input.length - 1];
+		if(shouldFilter) {
+			tab.classList.add(classFiltered);
+		} else {
+			tab.classList.remove(classFiltered);
+		}
+
+		// if we've typed in our selector, wait a little while to see if we're
+		// done typing and switch tabs
+		if(keys === input) {
+			let currentInput = input;
+
+			timeoutID = setTimeout(() => {
+				if(getInput() === currentInput) {
+					switchToTab(i);
+				}
+			}, inputWaitTime);
+		}
+
+		let keySpans = tab.querySelectorAll(".key");
+		for(let i = 0; i < keySpans.length; i++) {
+			keySpans[i].classList.remove(classSelected);
+
+			if(i < input.length && keySpans[i].innerHTML === input[i])
+				keySpans[i].classList.add(classSelected);
+		}
+	}
+}
+
 // event handlers for key press
 function keyPress(code) {
 	var codeOf = char => char.charCodeAt(0);
+	let tabs = Array.from(container.children);
+	let input = getInput();
 
-	if(codeOf("A") <= code && code <= codeOf("z")) {
+	if(code === keyCodeBackspace) {
+		input = setInput(input.slice(0, input.length - 1));
+		updateList(input, tabs);
+	} else if(codeOf("A") <= code && code <= codeOf("z")) {
 		let char = String.fromCharCode(code);
-		let input = setInput(getInput() + char);
-		console.log(`input: ${input}`);
-		let tabs = Array.from(container.children);
-		
-		// see if we've found the tab we were searching for, and update classes
-		for(let i = 0; i < tabs.length; i++) {
-			let tab = tabs[i];
-			// if we've typed in our selector, wait a little while to see if we're
-			// done typing
-			if(tab.querySelector(".keys").innerHTML === input) {
-				let currentInput = input;
-				setTimeout(() => {
-					if(getInput() === currentInput) {
-						switchToTab(i);
-					}
-				}, inputWaitTime);
-			// else if we've filtered out this tab (the last character doesn't match)
-			} else if(tab.querySelector(".keys").innerHTML[input.length - 1] !== char) {
-				tab.className += " filtered";
-			}
-		}
+		input = setInput(getInput() + char);
+		updateList(input, tabs);
 	}
 }
 
