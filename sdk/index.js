@@ -1,9 +1,32 @@
 var self = require("sdk/self");
+var data = self.data;
 
-// a dummy function, to show how tests work.
-// to see how to test this function, look at test/test-index.js
-function dummy(text, callback) {
-  callback(text);
+var panel = require("sdk/panel").Panel({
+	contentURL: data.url("panel.html"),
+	contentScriptFile: data.url("panel.js")
+});
+
+// returns a list of objects
+//		title: tab title
+//		icon: favicon URI XXXX--- not yet
+function getTabList() {
+	var tabs = Array.prototype.slice.call(require("sdk/tabs"));
+	let { getFavicon } = require("sdk/places/favicon");
+	var list = tabs.map(tab => ({ title: tab.title }));
+
+	console.log("tablist: ");
+	console.log(list);
+
+	return list;
 }
 
-exports.dummy = dummy;
+function showPanel() {
+	panel.port.emit("ready", JSON.stringify(getTabList()));
+	panel.show();
+}
+
+var { Hotkey } = require("sdk/hotkeys");
+var showPanel = Hotkey({
+	combo: "alt-c",
+	onPress: showPanel
+});
