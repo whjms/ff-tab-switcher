@@ -3,7 +3,8 @@ var data = self.data;
 
 var panel = require("sdk/panel").Panel({
 	contentURL: data.url("panel.html"),
-	contentScriptFile: data.url("panel.js")
+	contentScriptFile: data.url("panel.js"),
+	contentStyleFile: data.url("panel.css")
 });
 
 // returns a list of objects
@@ -13,9 +14,6 @@ function getTabList() {
 	var tabs = Array.prototype.slice.call(require("sdk/tabs"));
 	let { getFavicon } = require("sdk/places/favicon");
 	var list = tabs.map(tab => ({ title: tab.title }));
-
-	console.log("tablist: ");
-	console.log(list);
 
 	return list;
 }
@@ -35,4 +33,9 @@ var showPanel = Hotkey({
 // switch to selected tab
 panel.port.on("selectTab", tab => {
 	console.log(`selectTab(${tab})`);
+});
+
+// alert the content script when it's been hidden
+panel.on("hide", function() {
+	panel.port.emit("hide");
 });

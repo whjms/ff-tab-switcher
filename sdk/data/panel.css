@@ -1,0 +1,22 @@
+body {
+	background: #232323;
+	color: #aaa;
+}
+.keys {
+	border: 1px solid #555;
+	margin: 3px;
+	padding: 2px;
+	font-family: sans-serif;
+	background: #000;
+	color: #ccc;
+	font-size: 1.2em;
+}
+li {
+	list-style: none;
+	background: #444;
+	padding: 5px;
+	margin: 6px 0;
+}
+ul {
+	padding-left: 0;
+}
