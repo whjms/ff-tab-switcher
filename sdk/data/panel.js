@@ -1,6 +1,6 @@
 var container = document.querySelector("#tabs");
 var keys = "asdf";
-var inputWaitTime = 200;
+var inputWaitTime = 350;
 
 function htmlEncode( html ) {
     return document.createElement( 'a' ).appendChild( 
@@ -48,7 +48,7 @@ function generateKeyBindings(tabs) {
 function generateLI(tab) {
 	var html = 
 		`<li>
-			<kbd class="keys">${htmlEncode(tab.keys)}</kbd>
+			<span class="keys">${htmlEncode(tab.keys)}</span>
 			<span class="title">${htmlEncode(tab.title)}</span>
 		</li>`;
 
@@ -113,6 +113,9 @@ function keyPress(code) {
 						switchToTab(i);
 					}
 				}, inputWaitTime);
+			// else if we've filtered out this tab (the last character doesn't match)
+			} else if(tab.querySelector(".keys").innerHTML[input.length - 1] !== char) {
+				tab.className += " filtered";
 			}
 		}
 	}

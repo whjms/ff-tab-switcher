@@ -1,6 +1,7 @@
 body {
 	background: #232323;
 	color: #aaa;
+	font-size: 10px;
 }
 .keys {
 	border: 1px solid #555;
@@ -16,10 +17,14 @@ li {
 	background: #444;
 	padding: 5px;
 	margin: 6px 0;
+	transition: opacity 0.2s ease-in-out;
 }
 li.selected {
 	font-weight: bold;
 	background: #567;
+}
+li.filtered {
+	opacity: 0.5;
 }
 ul {
 	padding-left: 0;
