@@ -34,8 +34,14 @@ function togglePanel() {
 		let tabs = getTabList();
 		let tabHeight = 34;
 
-		panel.resize(width, Math.min(maxHeight, 20 + 20 + tabHeight * tabs.length))
-		panel.port.emit("ready", JSON.stringify(tabs));
+		panel.resize(width, Math.min(maxHeight, 20 + 20 + tabHeight * tabs.length));
+
+		let prefs = require("sdk/simple-prefs").prefs;
+		panel.port.emit("ready", JSON.stringify({
+			tabs: tabs,
+			keys: prefs.keys,
+			delay: prefs.delay
+		}));
 		panel.show();
 	}
 }

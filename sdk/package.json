@@ -12,5 +12,19 @@
   "license": "MIT",
   "keywords": [
     "jetpack"
-  ]
+  ],
+  "preferences" : [{
+    "name" : "keys",
+    "title" : "Keys",
+    "description" : "Keys used to populate the shortcuts (alphabetical only)",
+    "type": "string",
+    "value" : "asdf"
+  },
+  {
+    "name" : "delay",
+    "title" : "Delay",
+    "description" : "Delay between typing a shortcut and the tab opening (ms)",
+    "type" : "integer",
+    "value" : 350
+  }]
 }

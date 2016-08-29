@@ -1,6 +1,5 @@
 var container = document.querySelector("#tabs");
-var keys = "asdf";
-var inputWaitTime = 350;
+var keys, delay;
 var keyCodeBackspace = 8;
 var classSelected = "selected";
 var classFiltered = "filtered";
@@ -72,7 +71,10 @@ function generateLI(tab) {
 
 
 self.port.on("ready", function(msg) {
-	var tabs = generateKeyBindings(JSON.parse(msg));
+	msg = JSON.parse(msg);
+	delay = msg.delay;
+	keys = msg.keys;
+	var tabs = generateKeyBindings(msg.tabs);
 
 	var tabLIs = tabs.map(generateLI);
 
@@ -135,7 +137,7 @@ function updateList(input, tabs) {
 				if(getInput() === currentInput) {
 					switchToTab(i);
 				}
-			}, inputWaitTime);
+			}, delay);
 		}
 
 		let keySpans = tab.querySelectorAll(".key");
