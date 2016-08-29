@@ -17,6 +17,10 @@ li {
 	padding: 5px;
 	margin: 6px 0;
 }
+li.selected {
+	font-weight: bold;
+	background: #567;
+}
 ul {
 	padding-left: 0;
 }

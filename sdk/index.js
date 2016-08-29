@@ -18,16 +18,20 @@ function getTabList() {
 	return list;
 }
 
-function showPanel() {
-	panel.port.emit("ready", JSON.stringify(getTabList()));
-	panel.show();
+function togglePanel() {
+	if(panel.isShowing) {
+		panel.hide();
+	} else {
+		panel.port.emit("ready", JSON.stringify(getTabList()));
+		panel.show();
+	}
 }
 
 // setup hotkey
 var { Hotkey } = require("sdk/hotkeys");
-var showPanel = Hotkey({
+var showPanelKey = Hotkey({
 	combo: "alt-c",
-	onPress: showPanel
+	onPress: togglePanel
 });
 
 // switch to selected tab
