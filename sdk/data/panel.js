@@ -60,6 +60,7 @@ function generateLI(tab) {
 
 	var html = 
 		`<li data-keys="${htmlEncode(tab.keys)}">
+			<img src="${tab.icon || ""}" class="favicon">
 			<span class="keys">${keySpansConcat}</span>
 			<span class="title">${htmlEncode(tab.title)}</span>
 		</li>`;

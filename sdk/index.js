@@ -16,7 +16,13 @@ var panel = require("sdk/panel").Panel({
 function getTabList() {
 	var tabs = Array.prototype.slice.call(require("sdk/tabs"));
 	let { getFavicon } = require("sdk/places/favicon");
-	var list = tabs.map(tab => ({ title: tab.title }));
+	for(let i = 0; i < tabs.length; i++) {
+		let tab = tabs[i];
+		getFavicon(tab).then(url => {
+			tab.icon = url
+		});
+	}
+	var list = tabs.map(tab => ({ title: tab.title, icon: tab.icon }));
 
 	return list;
 }
@@ -26,7 +32,7 @@ function togglePanel() {
 		panel.hide();
 	} else {
 		let tabs = getTabList();
-		let tabHeight = 31;
+		let tabHeight = 34;
 
 		panel.resize(width, Math.min(maxHeight, 20 + 20 + tabHeight * tabs.length))
 		panel.port.emit("ready", JSON.stringify(tabs));

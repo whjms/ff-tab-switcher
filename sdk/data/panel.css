@@ -1,7 +1,7 @@
 body {
 	background: #232323;
 	color: #aaa;
-	font-size: 10px;
+	font-size: 11px;
 }
 .keys {
 	border: 1px solid #555;
@@ -15,9 +15,10 @@ body {
 li {
 	list-style: none;
 	background: #444;
-	padding: 5px;
 	margin: 6px 0;
 	transition: opacity 0.2s ease-in-out;
+	display: flex;
+	align-items: center;
 }
 .key.selected {
 	font-weight: bold;
@@ -27,6 +28,10 @@ li.filtered {
 }
 li.opening, .key.selected {
 	background: #567;
+}
+.favicon {
+	height: 16px;
+	margin: 0 7px;
 }
 ul {
 	padding-left: 0;
