@@ -12,6 +12,9 @@
 		}
 	],
 	"web_accessible_resources" : [
-		"selector.html",
-	]
+		"selector.html"
+	],
+	"background": {
+		"scripts" : ["background-provider.js"]
+	}
 }

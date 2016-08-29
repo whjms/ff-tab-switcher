@@ -18,3 +18,11 @@ Object.assign(frame.style, {
 });
 
 document.body.appendChild(frame);
+
+
+function proc(resp) {
+	console.log("got message:");
+	console.log(resp);
+}
+console.log("sending message...");
+chrome.runtime.sendMessage({"msg" : "test"}, proc);
